@@ -1,0 +1,21 @@
+{
+  "blocks": [
+    {
+      "hash": "000000000000000000014d9419d296cc6370eb54245d299fe3cffb43177a43c7",
+      "ver": 537346048,
+      "prev_block": "00000000000000000001fb77e045837079b8b6bc0c64a8012abe8ae421676c1d",
+      "mrkl_root": "ee80668938f071b68de7cc4db56c3ac45c05597532ef6e7c07036d8865da7b3f",
+      "time": 1746506928,
+      "bits": 386030829,
+      "next_block": [],
+      "fee": 3965598,
+      "nonce": 2875051877,
+      "n_tx": 2975,
+      "size": 1606403,
+      "block_index": 895465,
+      "main_chain": true,
+      "height": 895465,
+      "weight": 3994019
+    }
+  ]
+}

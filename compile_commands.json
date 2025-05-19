@@ -1,0 +1,76 @@
+[
+{
+  "directory": "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-I/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/include", "-isystem", "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf/include", "-o", "build/.objs/sat/linux/x86_64/debug/src/sat/main.cpp.o", "src/sat/main.cpp"],
+  "file": "src/sat/main.cpp"
+},
+{
+  "directory": "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-I/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/include", "-isystem", "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf/include", "-o", "build/.objs/sat/linux/x86_64/debug/src/sha256.cpp.o", "src/sha256.cpp"],
+  "file": "src/sha256.cpp"
+},
+{
+  "directory": "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-I/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/include", "-isystem", "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf/include", "-o", "build/.objs/sat/linux/x86_64/debug/src/block.cpp.o", "src/block.cpp"],
+  "file": "src/block.cpp"
+},
+{
+  "directory": "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-I/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/include", "-isystem", "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf/include", "-o", "build/.objs/test_sha256/linux/x86_64/debug/src/test/test_sha256.cpp.o", "src/test/test_sha256.cpp"],
+  "file": "src/test/test_sha256.cpp"
+},
+{
+  "directory": "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-I/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/include", "-isystem", "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf/include", "-o", "build/.objs/test_sha256/linux/x86_64/debug/src/sha256.cpp.o", "src/sha256.cpp"],
+  "file": "src/sha256.cpp"
+},
+{
+  "directory": "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-I/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/include", "-isystem", "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf/include", "-o", "build/.objs/test_sha256/linux/x86_64/debug/src/block.cpp.o", "src/block.cpp"],
+  "file": "src/block.cpp"
+},
+{
+  "directory": "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-I/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/include", "-I/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/src/sat", "-isystem", "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf/include", "-o", "build/.objs/test_simple/linux/x86_64/debug/src/test/sim_round.cpp.o", "src/test/sim_round.cpp"],
+  "file": "src/test/sim_round.cpp"
+},
+{
+  "directory": "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-I/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/include", "-I/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/src/sat", "-isystem", "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf/include", "-o", "build/.objs/test_simple/linux/x86_64/debug/src/sha256.cpp.o", "src/sha256.cpp"],
+  "file": "src/sha256.cpp"
+},
+{
+  "directory": "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-I/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/include", "-I/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/src/sat", "-isystem", "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf/include", "-o", "build/.objs/test_simple/linux/x86_64/debug/src/block.cpp.o", "src/block.cpp"],
+  "file": "src/block.cpp"
+},
+{
+  "directory": "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-I/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/include", "-isystem", "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf/include", "-o", "build/.objs/test_truth_table/linux/x86_64/debug/src/test/test_truth_table.cpp.o", "src/test/test_truth_table.cpp"],
+  "file": "src/test/test_truth_table.cpp"
+},
+{
+  "directory": "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-I/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/include", "-I/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/src/sat", "-isystem", "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf/include", "-o", "build/.objs/test_less_than/linux/x86_64/debug/src/test/test_less_than.cpp.o", "src/test/test_less_than.cpp"],
+  "file": "src/test/test_less_than.cpp"
+},
+{
+  "directory": "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-I/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/include", "-isystem", "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf/include", "-o", "build/.objs/brute/linux/x86_64/debug/src/sha256.cpp.o", "src/sha256.cpp"],
+  "file": "src/sha256.cpp"
+},
+{
+  "directory": "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-I/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/include", "-isystem", "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf/include", "-o", "build/.objs/brute/linux/x86_64/debug/src/block.cpp.o", "src/block.cpp"],
+  "file": "src/block.cpp"
+},
+{
+  "directory": "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-I/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/include", "-isystem", "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf/include", "-o", "build/.objs/brute/linux/x86_64/debug/src/brute/main.cpp.o", "src/brute/main.cpp"],
+  "file": "src/brute/main.cpp"
+},
+{
+  "directory": "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-I/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/include", "-isystem", "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf/include", "-o", "build/.objs/test_solver/linux/x86_64/debug/src/test/test_for_read.cpp.o", "src/test/test_for_read.cpp"],
+  "file": "src/test/test_for_read.cpp"
+}]

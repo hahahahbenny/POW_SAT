@@ -1,0 +1,11 @@
+[
+{
+  "directory": "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-I/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/include", "-o", "build/.objs/sat/linux/x86_64/release/src/sat/main.cpp.o", "src/sat/main.cpp"],
+  "file": "src/sat/main.cpp"
+},
+{
+  "directory": "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-I/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/include", "-o", "build/.objs/test_json/linux/x86_64/release/src/getblock.cpp.o", "src/getblock.cpp"],
+  "file": "src/getblock.cpp"
+}]
