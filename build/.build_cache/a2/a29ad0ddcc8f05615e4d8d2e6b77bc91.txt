@@ -1,0 +1,7 @@
+{
+    errdata = "\27[01m\27[Ksrc/sat/main.cpp:\27[m\27[K In function ‘\27[01m\27[Kvoid outPutHex(std::string, T*, size_t)\27[m\27[K’:\
+\27[01m\27[Ksrc/sat/main.cpp:109:12:\27[m\27[K \27[01;35m\27[Kwarning: \27[m\27[K‘\27[01m\27[Kif constexpr\27[m\27[K’ only available with ‘\27[01m\27[K-std=c++17\27[m\27[K’ or ‘\27[01m\27[K-std=gnu++17\27[m\27[K’\
+  109 |         if \27[01;35m\27[Kconstexpr\27[m\27[K (std::is_same<T, char>::value || std::is_same<T, unsigned char>::value) {\
+      |            \27[01;35m\27[K^~~~~~~~~\27[m\27[K\
+"
+}
