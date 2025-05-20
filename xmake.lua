@@ -2,7 +2,7 @@ add_includedirs("$(projectdir)/include")
 add_requires("openssl", {configs = {system = true}})
 add_requires("cryptominisat5", {configs = {system = true}})
 add_packages("openssl")
-add_rules("mode.release", "mode.debug")
+-- add_rules("mode.release", "mode.debug")
 
 target("sat")
     set_kind("binary")

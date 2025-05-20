@@ -1,16 +1,14 @@
 {
-    depfiles_gcc = "test_for_read.o: src/test/test_for_read.cpp\
-",
     files = {
         "src/test/test_for_read.cpp"
     },
+    depfiles_gcc = "test_for_read.o: src/test/test_for_read.cpp\
+",
     values = {
         "/usr/bin/gcc",
         {
             "-m64",
-            "-g",
-            "-O0",
-            "-I/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/include",
+            "-I/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/code/include",
             "-isystem",
             "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf/include"
         }
