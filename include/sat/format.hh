@@ -40,4 +40,6 @@ std::string format(const char *s, Args... args)
 	return ss.str();
 }
 
+std::string comment(std::string str, int tag = 0);
+
 #endif

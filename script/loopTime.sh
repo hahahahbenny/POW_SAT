@@ -32,13 +32,13 @@ CADICAL_VIVINST="/home/bennywu/benny_workflow/cpp_learning/sat/Sequential2023/Se
 SAT=$CADICAL_VIVINST
 
 # 清空输出文件（如果已存在）
-TEST_FILE="/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/output_cnf/bitcoin_test8bit.cnf"
+TEST_FILE="/home/bennywu/benny_workflow/cpp_learning/satcoin-master/out_1k_sat.cnf"
 
 # 循环执行指令
 for ((j = 0; j < 10; j++)); do
-    OUTPUT_FILE="../result/sat/consume_time_${SAT_NAME[j]}_withoutxor.csv"
+    OUTPUT_FILE="/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/result/sat/consume_time_${SAT_NAME[j]}_heesser.csv"
     > "$OUTPUT_FILE"
-    for ((i = 8; i <= LOOP_COUNT; i++)); do
+    for ((i = 8; i <= 8; i++)); do
         echo "Iteration $j: $i"
 
         echo  "${SAT_NAME[j]} : ${SAT_ADRESS[j]}"
@@ -46,16 +46,16 @@ for ((j = 0; j < 10; j++)); do
         > "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/script/temp/proof.out"
 
         CNF_FILE="/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/output_cnf/withour_xor/sat/random$((i))bit.cnf"
-        RESULT_FILE="/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/result/${SAT_NAME[j]}.txt"
+        RESULT_FILE="/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/result/${SAT_NAME[j]}_heesser.txt"
         
         # echo $CNF_FILE /home/bennywu/benny_workflow/cpp_learning/satcmpbrute/script/temp
 
         if [ $j -gt 3 ]; then
             /usr/bin/time -f "$((i))_bits, %e \n" -a -o "$OUTPUT_FILE" \
-            ${SAT_ADRESS[j]} "$CNF_FILE" /home/bennywu/benny_workflow/cpp_learning/satcmpbrute/script/temp > "$RESULT_FILE"
+            ${SAT_ADRESS[j]} "$TEST_FILE" /home/bennywu/benny_workflow/cpp_learning/satcmpbrute/script/temp > "$RESULT_FILE"
         else
             /usr/bin/time -f "$((i))_bits, %e \n" -a -o "$OUTPUT_FILE" \
-            ${SAT_ADRESS[j]} "$CNF_FILE" > "$RESULT_FILE"
+            ${SAT_ADRESS[j]} "$TEST_FILE" > "$RESULT_FILE"
         fi
         # # 使用 time 命令记录执行时间，将结果写入文件
 
