@@ -1,5 +1,6 @@
 {
     files = {
+        "build/.objs/test_less_than/linux/x86_64/debug/src/sat/format.cpp.o",
         "build/.objs/test_less_than/linux/x86_64/debug/src/test/test_less_than.cpp.o"
     },
     values = {

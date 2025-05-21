@@ -1,6 +1,6 @@
 #include "sha256.h"
 
-std::string sha256(const std::string str)
+std::string opensslSha256(const std::string str)
 {
     unsigned char hash[SHA256_DIGEST_LENGTH];
     SHA256_CTX sha256;

@@ -20,23 +20,25 @@ target("brute")
 target("test_sha256")
     set_kind("binary")
     add_files("src/test/test_sha256.cpp")
+    add_files("src/sat/format.cpp")
     add_files("src/*.cpp")
 
 target("test_simple")
-    add_includedirs("$(projectdir)/src/sat")
     set_kind("binary")
     add_files("src/test/sim_round.cpp")
+    add_files("src/sat/format.cpp")
     add_files("src/*.cpp")
 
 
 target("test_solver")
     add_packages("cryptominisat5")
+    add_files("src/sat/format.cpp")
     add_files("src/test/test_for_read.cpp")
     set_kind("binary")
 
 target("test_less_than")
-    add_includedirs("$(projectdir)/src/sat/")
     add_packages("cryptominisat5")
+    add_files("src/sat/format.cpp")
     add_files("src/test/test_less_than.cpp")
     set_kind("binary")
 

@@ -2,7 +2,8 @@
 #include <string>
 
 // openssl sha256 Encapsulation
-std::string sha256(const std::string str);
+std::string opensslSha256(const std::string str);
+/* Define the SHA shift, rotate left and rotate right macro */
 #define SHA256_SHR(bits, word)  ((word) >> (bits))
 #define SHA256_ROTL(bits, word) (((word) << (bits)) | ((word) >> (32 - (bits))))
 #define SHA256_ROTR(bits, word) (((word) >> (bits)) | ((word) << (32 - (bits))))

@@ -55,40 +55,6 @@ void outPutHex(std::string title, T* arr, size_t size){
     std::cout << "\n";
 }
 
-static uint32_t SHA256_sigma0(uint32_t word)
-{
-    // return (SHA256_ROTR( 7,word) ^ SHA256_ROTR(18,word) ^ SHA256_SHR( 3,word));
-    uint32_t tmp1;
-    uint32_t tmp2;
-    uint32_t tmp3;
-
-    tmp1 = SHA256_ROTR(7, word);
-    // printf("c SHA256_sigma0 tmp1=0x%08X\n", tmp1);
-    tmp2 = SHA256_ROTR(18, word);
-    // printf("c SHA256_sigma0 tmp2=0x%08X\n", tmp2);
-    tmp3 = SHA256_SHR(3, word);
-    // printf("c SHA256_sigma0 tmp3=0x%08X\n", tmp3);
-
-    return tmp1 ^ tmp2 ^ tmp3;
-}
-
-static uint32_t SHA256_sigma1(uint32_t word)
-{
-    // return (SHA256_ROTR(17,word) ^ SHA256_ROTR(19,word) ^ SHA256_SHR(10,word));
-    uint32_t tmp1;
-    uint32_t tmp2;
-    uint32_t tmp3;
-
-    tmp1 = SHA256_ROTR(17, word);
-    // printf("c SHA256_sigma1 tmp1=0x%08X\n", tmp1);
-    tmp2 = SHA256_ROTR(19, word);
-    // printf("c SHA256_sigma1 tmp2=0x%08X\n", tmp2);
-    tmp3 = SHA256_SHR(10, word);
-    // printf("c SHA256_sigma1 tmp3=0x%08X\n", tmp3);
-
-    return tmp1 ^ tmp2 ^ tmp3;
-}
-
 #define SHA_Ch(x, y, z)  (((x) & ((y) ^ (z))) ^ (z))
 #define SHA_Maj(x, y, z) (((x) & ((y) | (z))) | ((y) & (z)))
 
@@ -243,8 +209,8 @@ int main(){
     std::vector<uint32_t> second_round_output(8, 0);
     std::vector<uint32_t> result(8, 0);
 
-    sha_result = sha256(input_except_nonce);
-    sha_result = sha256(sha_result);
+    sha_result = opensslSha256(input_except_nonce);
+    sha_result = opensslSha256(sha_result);
 
     outPutHex("target", block_mining.target.data(), block_mining.target.size());
 

@@ -11,7 +11,7 @@ class Cnf{
     Cnf(): nr_variables(0), nr_clauses(0), nr_xor_clauses(0){};
     Cnf(bool use_xor) : config_use_xor_clauses(use_xor){};
     // basic function
-    // void comment(std::string str);
+    void comment(std::string str);
     void newVars(std::string label, int x[], unsigned int n, bool decision_var = true);
     void newConstant(std::string label, int r[], int size, uint32_t value);
     void constant1(int r, bool value, std::string help_text);

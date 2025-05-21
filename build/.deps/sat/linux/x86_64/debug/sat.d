@@ -1,6 +1,9 @@
 {
     files = {
+        "build/.objs/sat/linux/x86_64/debug/src/sat/format.cpp.o",
         "build/.objs/sat/linux/x86_64/debug/src/sat/main.cpp.o",
+        "build/.objs/sat/linux/x86_64/debug/src/sat/cnf.cpp.o",
+        "build/.objs/sat/linux/x86_64/debug/src/sat/pow.cpp.o",
         "build/.objs/sat/linux/x86_64/debug/src/sha256.cpp.o",
         "build/.objs/sat/linux/x86_64/debug/src/block.cpp.o"
     },

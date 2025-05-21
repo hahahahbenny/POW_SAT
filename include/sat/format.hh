@@ -5,18 +5,10 @@
 #include <sstream>
 #include <string>
 
-void format(std::ostringstream &ss, const char *s)
-{
-	while (*s) {
-		if (*s == '$' || *s == '#')
-			throw std::runtime_error("too few arguments provided to format");
-
-		ss << *s++;
-	}
-}
+void format(std::ostringstream &ss, const char *s);
 
 template<typename t, typename... Args>
-void format(std::ostringstream &ss, const char *s, t &value, Args... args)
+static void format(std::ostringstream &ss, const char *s, t &value, Args... args)
 {
 	while (*s) {
 		if (*s == '$' || *s == '#') {
@@ -40,6 +32,6 @@ std::string format(const char *s, Args... args)
 	return ss.str();
 }
 
-std::string comment(std::string str, int tag = 0);
+// std::string comment(std::string str, int tag = 0);
 
 #endif

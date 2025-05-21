@@ -61,8 +61,8 @@ int main(){
      std::thread timer(timer_thread, max_duration);
     // // sha256("abc");
     // std::cout << std::endl;
-    sha_result = sha256(input_except_nonce + block_mining.nonce_bytes);
-    sha_result = sha256(sha_result);
+    sha_result = opensslSha256(input_except_nonce + block_mining.nonce_bytes);
+    sha_result = opensslSha256(sha_result);
 
     std::reverse(sha_result.begin(), sha_result.end());    
     while(!should_exit){
@@ -74,8 +74,8 @@ int main(){
             std::cerr << "nonce get max or trans to byte error" << std::endl;
         }
         printf("the nonce is %d\n", block_mining.nonce);
-        sha_result = sha256(input_except_nonce + block_mining.nonce_bytes);
-        sha_result = sha256(sha_result);
+        sha_result = opensslSha256(input_except_nonce + block_mining.nonce_bytes);
+        sha_result = opensslSha256(sha_result);
         std::reverse(sha_result.begin(), sha_result.end());   
     };
     std::cout << "Time limit reached. Exiting..." << std::endl;

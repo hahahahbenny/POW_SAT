@@ -1,0 +1,7 @@
+{
+    errdata = "In file included from \27[01m\27[Ksrc/test/test_less_than.cpp:32\27[m\27[K:\
+\27[01m\27[K/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/code/include/sat/format.hh:8:13:\27[m\27[K \27[01;35m\27[Kwarning: \27[m\27[K‘\27[01m\27[Kvoid format(std::ostringstream&, const char*)\27[m\27[K’ used but never defined\
+    8 | static void \27[01;35m\27[Kformat\27[m\27[K(std::ostringstream &ss, const char *s);\
+      |             \27[01;35m\27[K^~~~~~\27[m\27[K\
+"
+}

@@ -6,6 +6,11 @@
 
 // write comment clause to cnf output stream
 
+void Cnf::comment(std::string str)
+{
+    output << format("c $\n", str);
+}
+
 void Cnf::reset(){
     nr_clauses = 0;
     nr_xor_clauses = 0;
