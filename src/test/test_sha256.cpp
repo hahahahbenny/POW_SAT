@@ -166,7 +166,7 @@ static void sha256_forward(uint8_t Message_Block[64], int len, uint32_t h_out[8]
 
 int main(){
 
-    std::string file_name = "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/resource/latestblock.json"; 
+    std::string file_name = "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/code/resource/latestblock.json"; 
     // std::string cnf_name = "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/bitcoin.cnf";
 
     // // open cnf file

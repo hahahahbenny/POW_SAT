@@ -1,35 +1,35 @@
 {
     openssl = {
-        installdir = "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf",
-        libfiles = {
-            "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf/lib/libssl.a",
-            "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf/lib/libcrypto.a"
-        },
-        linkdirs = "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf/lib",
         __requirestr = "openssl",
         links = {
             "ssl",
             "crypto"
         },
-        version = "1.1.1-w",
-        __enabled = true,
-        syslinks = {
-            "pthread",
-            "dl"
-        },
+        static = true,
+        linkdirs = "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf/lib",
+        license = "Apache-2.0",
         __requireconfs = {
             configs = {
                 system = true
             }
         },
-        static = true,
+        installdir = "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf",
+        version = "1.1.1-w",
         envs = {
             LD_LIBRARY_PATH = {
                 "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf/lib"
             }
         },
-        license = "Apache-2.0",
-        sysincludedirs = "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf/include"
+        syslinks = {
+            "pthread",
+            "dl"
+        },
+        libfiles = {
+            "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf/lib/libssl.a",
+            "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf/lib/libcrypto.a"
+        },
+        sysincludedirs = "/home/bennywu/.xmake/packages/o/openssl/1.1.1-w/6c51ab6278e2479b883dffafac69fdaf/include",
+        __enabled = true
     },
     cryptominisat5 = {
         __requireconfs = {
@@ -37,13 +37,13 @@
                 system = true
             }
         },
-        __enabled = true,
         __requirestr = "cryptominisat5",
+        links = "cryptominisat5",
         envs = {
             LD_LIBRARY_PATH = {
                 "/home/bennywu/.xmake/packages/c/cryptominisat5/latest/4e0143c97b65425b855ad5fd03038b6a/lib"
             }
         },
-        links = "cryptominisat5"
+        __enabled = true
     }
 }

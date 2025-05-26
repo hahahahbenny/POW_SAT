@@ -19,7 +19,14 @@ void Cnf::reset(){
     output.clear();
 }
 
+void Cnf::addCnfBlock(std::string cnf_block, int clause_num){
+    output << cnf_block << "\n";
+    nr_clauses += clause_num;
+}
+
 void Cnf::newVars(std::string label, int x[], unsigned int n, bool decision_var){
+    
+    comment(label+":" + std::to_string(nr_variables) + "-" + std::to_string(nr_variables+n));
     for (unsigned int i = 0; i < n; ++i)
         x[i] = ++nr_variables;
 }
@@ -30,7 +37,7 @@ void Cnf::constant1(int r, bool value, std::string help_text){
 }
 
 void Cnf::constant(int r[], u_int8_t value, int size, std::string help_text){
-    for (unsigned int i = 0; i < 8; ++i)
+    for (unsigned int i = 0; i < size; ++i)
     {
         output << format("$$ 0\n", (value >> i) & 1 ? "" : "-", r[i]);
         nr_clauses += 1;
@@ -60,6 +67,11 @@ void Cnf::newConstant(std::string label, int r[], int size, uint32_t value){
     default:
         constant(r, value, size, label+"constant"+std::to_string(size));
     }
+}
+
+void Cnf::printVariablesAndClauseNum(std::string title){
+    std::cout << title << std::endl;
+    std::cout << nr_variables << " " << nr_clauses << std::endl;
 }
 
 // clause function
@@ -162,6 +174,26 @@ void Cnf::xor2(int r[], int a[], int b[], unsigned int size)
                     continue;
 
                 clause((j & 1) ? -r[i] : r[i], (j & 2) ? a[i] : -a[i], (j & 4) ? b[i] : -b[i]);
+            }
+        }
+    }
+}
+
+void Cnf::nxor2(int r[], int a[], int b[], unsigned int size){
+    comment("nxor2");
+
+    if (config_use_xor_clauses)
+    {
+        for (unsigned int i = 0; i < size; ++i)
+            xor_clause(r[i], a[i], b[i]);
+    }
+    else{
+        for (unsigned int i = 0; i < size; ++i)
+        {
+            clause(r[i], a[i], b[i]);
+            for (unsigned int j = 0; j < 3; ++j)
+            {   
+                clause((j == 0) ? r[i] : -r[i], (j == 1) ? a[i] : -a[i], (j == 2) ? b[i] : -b[i]);
             }
         }
     }

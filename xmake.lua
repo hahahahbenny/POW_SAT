@@ -46,3 +46,15 @@ target("test_truth_table")
     add_files("src/test/test_truth_table.cpp")
     set_kind("binary")
 
+target("test_pow")
+    set_kind("binary")
+    add_files("src/test/test_pow.cpp")
+    add_files("src/sat/pow.cpp")
+    add_files("src/sat/cnf.cpp")
+    add_files("src/block.cpp")
+    add_files("src/sha256.cpp")
+    add_files("src/sat/format.cpp")
+    
+    
+    
+

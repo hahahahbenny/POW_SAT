@@ -1102,8 +1102,11 @@ static bool bitcoin(std::string block_without_nonce, const uint8_t* target)
     // 限制r0的输入w0到w15
     for(int i = 0; i < 12; i++){
         constant8(&(r0.w[i/4][24-(8*(i%4))]), block_without_nonce[i+64]);
+        std::cout <<std::hex << (int)block_without_nonce[i+64] << " " << std::endl;
     }
-
+    std::cout << std::endl;
+    
+    
     // 就是这里很容易出错，就是nonce应该是小端法来存的，而不是直接用uint32的形式来存
     // 0x65cf5dab
     switch(LEFT_BITS){
@@ -1311,7 +1314,7 @@ void testSatUnit(std::string block_without_nonce){
 
 int main(int argc, char *argv[])
 {
-    std::string file_name = "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/resource/latestblock.json"; 
+    std::string file_name = "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/code/resource/latestblock.json"; 
     // std::string cnf_name = "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/bitcoin.cnf";
 
     // // open cnf file
@@ -1347,7 +1350,7 @@ int main(int argc, char *argv[])
 
     std::cout << std::endl;
 
-    for(int i =4; i <= 16; i++){
+    for(int i =4; i <= 4; i++){
         nr_clauses = 0;
         nr_variables = 0;
         config_use_xor_clauses = 0;
@@ -1389,11 +1392,11 @@ int main(int argc, char *argv[])
 
 
 
-        if (config_cnf) {
-            cnf_file
-            << format("p cnf $ $\n", nr_variables, nr_clauses)
-            << cnf.str();
-        }
+        // if (config_cnf) {
+        //     cnf_file
+        //     << format("p cnf $ $\n", nr_variables, nr_clauses)
+        //     << cnf.str();
+        // }
         cnf.str("");
         cnf.clear();
         nr_clauses = 0;

@@ -1,7 +1,0 @@
-{
-    errdata = "\27[01m\27[Ksrc/block.cpp:\27[m\27[K In member function ‘\27[01m\27[Kbool block::createTargetFromBits()\27[m\27[K’:\
-\27[01m\27[Ksrc/block.cpp:219:1:\27[m\27[K \27[01;35m\27[Kwarning: \27[m\27[Kno return statement in function returning non-void [\27[01;35m\27[K-Wreturn-type\27[m\27[K]\
-  219 | \27[01;35m\27[K}\27[m\27[K\
-      | \27[01;35m\27[K^\27[m\27[K\
-"
-}

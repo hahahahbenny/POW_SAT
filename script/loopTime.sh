@@ -9,7 +9,7 @@ SAT_ADRESS=("/home/bennywu/benny_workflow/cpp_learning/sat/kissat-master/build/k
             "cryptominisat5" \
             "/home/bennywu/benny_workflow/cpp_learning/sat/cadical-master/build/cadical" \
             "/home/bennywu/benny_workflow/cpp_learning/sat/sequential/kissat-sc2024/bin/kissat" \
-            "/home/bennywu/benny_workflow/cpp_learning/sat/sequential/BreakID-Kissat/bin" \
+            "/home/bennywu/benny_workflow/cpp_learning/sat/sequential/BreakID-Kissat/bin/starexec_run_default" \
             "/home/bennywu/benny_workflow/cpp_learning/sat/sequential/hKis/bin/starexec_run_bva" \
             "/home/bennywu/benny_workflow/cpp_learning/sat/sequential/hKis/bin/starexec_run_pbva" \
             "/home/bennywu/benny_workflow/cpp_learning/sat/Sequential2023/Sequential/solvers/SBVA/bin/starexec_run_sbva_cadical" \
@@ -36,26 +36,26 @@ TEST_FILE="/home/bennywu/benny_workflow/cpp_learning/satcoin-master/out_1k_sat.c
 
 # 循环执行指令
 for ((j = 0; j < 10; j++)); do
-    OUTPUT_FILE="/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/result/sat/consume_time_${SAT_NAME[j]}_heesser.csv"
+    OUTPUT_FILE="/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/result/sat/optimize/consume_time_optimize_${SAT_NAME[j]}.csv"
     > "$OUTPUT_FILE"
-    for ((i = 8; i <= 8; i++)); do
+    for ((i = 14; i <= 16; i++)); do
         echo "Iteration $j: $i"
 
         echo  "${SAT_NAME[j]} : ${SAT_ADRESS[j]}"
 
-        > "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/script/temp/proof.out"
+        > "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/code/script/temp/proof.out"
 
-        CNF_FILE="/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/output_cnf/withour_xor/sat/random$((i))bit.cnf"
-        RESULT_FILE="/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/result/${SAT_NAME[j]}_heesser.txt"
+        CNF_FILE="/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/output_cnf/OptimizeVars_a_to_h/$((i))bits_left.cnf"
+        # RESULT_FILE="/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/result/${SAT_NAME[j]}_optimize.txt"
         
         # echo $CNF_FILE /home/bennywu/benny_workflow/cpp_learning/satcmpbrute/script/temp
 
         if [ $j -gt 3 ]; then
-            /usr/bin/time -f "$((i))_bits, %e \n" -a -o "$OUTPUT_FILE" \
-            ${SAT_ADRESS[j]} "$TEST_FILE" /home/bennywu/benny_workflow/cpp_learning/satcmpbrute/script/temp > "$RESULT_FILE"
+            timeout -s SIGINT 1800s /usr/bin/time -f "$((i))_bits, %e \n" -a -o "$OUTPUT_FILE" \
+            ${SAT_ADRESS[j]} "$CNF_FILE" /home/bennywu/benny_workflow/cpp_learning/satcmpbrute/code/script/temp
         else
-            /usr/bin/time -f "$((i))_bits, %e \n" -a -o "$OUTPUT_FILE" \
-            ${SAT_ADRESS[j]} "$TEST_FILE" > "$RESULT_FILE"
+            timeout -s SIGINT 1800s /usr/bin/time -f "$((i))_bits, %e \n" -a -o "$OUTPUT_FILE" \
+            ${SAT_ADRESS[j]} "$CNF_FILE" 
         fi
         # # 使用 time 命令记录执行时间，将结果写入文件
 

@@ -7,9 +7,9 @@
 #include <vector>
 
 class Cnf{
-
+public:
     Cnf(): nr_variables(0), nr_clauses(0), nr_xor_clauses(0){};
-    Cnf(bool use_xor) : config_use_xor_clauses(use_xor){};
+    Cnf(bool use_xor) : nr_variables(0), nr_clauses(0), nr_xor_clauses(0), config_use_xor_clauses(use_xor){};
     // basic function
     void comment(std::string str);
     void newVars(std::string label, int x[], unsigned int n, bool decision_var = true);
@@ -18,6 +18,9 @@ class Cnf{
     void constant(int r[], u_int8_t value, int size, std::string help_text);
     void constant32(int r[], uint32_t value, std::string help_text);
     void reset();
+    // add clause only cannot add varialbles
+    void addCnfBlock(std::string cnf_block, int clause_num);
+    void printVariablesAndClauseNum(std::string title);
 
     // basic clause function
     void and2(int r[], int a[], int b[], unsigned int size);
@@ -26,6 +29,7 @@ class Cnf{
     void eq(int a[], int b[], unsigned int n = 32);
     void xor_clause(const std::vector<int> &v);
     void xor2(int r[], int a[], int b[], unsigned int size);
+    void nxor2(int r[], int a[], int b[], unsigned int size);
     void xor3(int r[], int a[], int b[], int c[], unsigned int size = 32);
     void xor4(int r[32], int a[32], int b[32], int c[32], int d[32]);
     void add2(std::string label, int r[32], int a[32], int b[32]);

@@ -1,3 +1,6 @@
+#ifndef BLOCK
+#define BLOCK
+
 #include "rapidjson/document.h"
 #include <string>
 #include <cstring>
@@ -37,3 +40,6 @@ private:
     std::string parseStringToBytes(std::string input);
     std::string parseIntToBytes(int input);
 };
+
+
+#endif // !BLOCK
