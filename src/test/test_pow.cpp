@@ -30,7 +30,7 @@ int main(int argc, const char** argv) {
     t.constrainHout();
     for(int i = 16; i >= 4; i--){
         t.ConstrainNonce( 0x65cf5dab, i);
-        std::string left_bit = (std::to_string(i) + "bits_left.cnf");
+        std::string left_bit = (std::to_string(i) + "bits_left_ConstantBool.cnf");
         if(!t.writeFile(cnf_name + left_bit)){
             std::cerr << "write cnf file failed" << std::endl;
         }

@@ -15,7 +15,7 @@ public:
     void newVars(std::string label, int x[], unsigned int n, bool decision_var = true);
     void newConstant(std::string label, int r[], int size, uint32_t value);
     void constant1(int r, bool value, std::string help_text);
-    void constant(int r[], u_int8_t value, int size, std::string help_text);
+    void constant(int r[], u_int32_t value, std::string help_text, int size);
     void constant32(int r[], uint32_t value, std::string help_text);
     void reset();
     // add clause only cannot add varialbles

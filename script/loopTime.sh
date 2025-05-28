@@ -35,17 +35,17 @@ SAT=$CADICAL_VIVINST
 TEST_FILE="/home/bennywu/benny_workflow/cpp_learning/satcoin-master/out_1k_sat.cnf"
 
 # 循环执行指令
-for ((j = 0; j < 10; j++)); do
-    OUTPUT_FILE="/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/result/sat/optimize/consume_time_optimize_${SAT_NAME[j]}.csv"
+for ((j = 0; j < 1; j++)); do
+    OUTPUT_FILE="/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/result/sat/optimize_withConstant/consume_time_constant_${SAT_NAME[j]}.csv"
     > "$OUTPUT_FILE"
-    for ((i = 14; i <= 16; i++)); do
+    for ((i = 13; i <= 16; i++)); do
         echo "Iteration $j: $i"
 
         echo  "${SAT_NAME[j]} : ${SAT_ADRESS[j]}"
 
         > "/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/code/script/temp/proof.out"
 
-        CNF_FILE="/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/output_cnf/OptimizeVars_a_to_h/$((i))bits_left.cnf"
+        CNF_FILE="/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/output_cnf/OptimizeVars_a_to_h/$((i))bits_left_ConstantBool.cnf"
         # RESULT_FILE="/home/bennywu/benny_workflow/cpp_learning/satcmpbrute/result/${SAT_NAME[j]}_optimize.txt"
         
         # echo $CNF_FILE /home/bennywu/benny_workflow/cpp_learning/satcmpbrute/script/temp
@@ -55,7 +55,7 @@ for ((j = 0; j < 10; j++)); do
             ${SAT_ADRESS[j]} "$CNF_FILE" /home/bennywu/benny_workflow/cpp_learning/satcmpbrute/code/script/temp
         else
             timeout -s SIGINT 1800s /usr/bin/time -f "$((i))_bits, %e \n" -a -o "$OUTPUT_FILE" \
-            ${SAT_ADRESS[j]} "$CNF_FILE" 
+            ${SAT_ADRESS[j]} --statistics "$CNF_FILE" > ../../result/intermedia/$((i))bits_left_ConstantBool_.log
         fi
         # # 使用 time 命令记录执行时间，将结果写入文件
 

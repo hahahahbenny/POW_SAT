@@ -30,7 +30,8 @@ private:
     void constantW_round1();
     void constantW_round2();
     void constantAToH(std::vector<uint32_t> first_round_output);
-
+    void constantWithExist(int r[], u_int32_t value, std::string help_text, int size);
+    
     // clause
     void rotl(int r[32], int x[32], unsigned int n);
     void fct_SHA256_SHR(int r[32], unsigned int bits, int word[32]);
@@ -49,6 +50,7 @@ private:
 
     int k[64][32];
     int h_out[8][32]; //第一轮的输出直接接第二轮的输入，省一个等于的过程，那么此处就是第二轮的输出
+    int constant_bool[2];
     
     uint32_t a_to_h_init[8] = {0x6A09E667, 0xBB67AE85, 0x3C6EF372, 0xA54FF53A,
                                0x510E527F, 0x9B05688C, 0x1F83D9AB, 0x5BE0CD19};

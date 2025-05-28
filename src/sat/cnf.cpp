@@ -36,7 +36,7 @@ void Cnf::constant1(int r, bool value, std::string help_text){
     nr_clauses += 1;
 }
 
-void Cnf::constant(int r[], u_int8_t value, int size, std::string help_text){
+void Cnf::constant(int r[], u_int32_t value, std::string help_text, int size){
     for (unsigned int i = 0; i < size; ++i)
     {
         output << format("$$ 0\n", (value >> i) & 1 ? "" : "-", r[i]);
@@ -65,7 +65,7 @@ void Cnf::newConstant(std::string label, int r[], int size, uint32_t value){
         constant32(r, value, label + "constant32");
         break;
     default:
-        constant(r, value, size, label+"constant"+std::to_string(size));
+        constant(r, value, label+"constant"+std::to_string(size), size);
     }
 }
 

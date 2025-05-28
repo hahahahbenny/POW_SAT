@@ -22,46 +22,77 @@ void outPutHex(std::string title, T* arr, size_t size){
     std::cout << "\n";
 }
 
+void PowCnf::constantWithExist(int r[], u_int32_t value, std::string help_text, int size){
+    for(int i = 0; i < size; i++){
+        r[i] = ((value >> i) & 0x1) ? constant_bool[1] : constant_bool[0];
+    }
+}
+
 bool PowCnf::assignVariablesIndices(){  
     // todo
-    // 1. 分配两轮变量数量
-    // 2. 包括W到hout, 第一轮的h_out到第二轮的w0-7可以复用
-    // 3. 初始化a-h，a到h每四轮之间有12个序号可以直接复用
-    // 4. k只需要一轮
-    // 5. T1和T2的中间变量有没有可能减少
-    // 总体的目标是减少相关的变量个数
-    // 对于T1和T2的中间变量有没有可能直接减少，从而变成直接通过真值表处理
+    // 2. 只分配需要新变量的部分
+    // 3. 常量全部用最开始的0和1来代替
+    // 所以最终需要分配的就只有几个变量
+    // w_round1[3]
+    // w16-w63
+    // a1h1-a64h64
+    // sigma之类的中间变量，这个可能还可以优化
+    newVars("constant vars", constant_bool, 2);
+    constant1(constant_bool[0], 0, "constant 0 variable");
+    constant1(constant_bool[1], 1, "constant 1 variable");
 
-    // 不过其实有一点点危险，因为直接通过指针操作过去
-    // 初始化W和k
+    
+    newVars("nonce_w_round1[3]", w_round1[3], 32);
     for(int i = 0; i < 64; i++){
-        newVars("init W_round1["+ std::to_string(i)+ "]", w_round1[i], 32);
+        if(i >= 16){
+            newVars("init W_round1["+ std::to_string(i)+ "]", w_round1[i], 32);
+        }
+
 #ifdef ROUND2
-        newVars("init W_round2["+ std::to_string(i)+ "]", w_round2[i], 32);
+        if(i < 8 || i >= 16){
+            newVars("init W_round2["+ std::to_string(i)+ "]", w_round2[i], 32);
+        }
 #endif 
-        newVars("init k[" + std::to_string(i) + "]", k[i], 32);
     }
 
+    // 此处因为要先用存在的变量先初始化最初的第一轮变量才能让后面的传播成为可能
+    std::vector<uint32_t> first_round_output;
+    first_round_output.resize(8);
+    uint8_t input[64];
+    for(int i = 0; i < 4; i++){
+        input[i] = mining_block.version_bytes[i];
+    }
+    for(int i = 4; i < 36; i++){
+        input[i] = mining_block.previous_block_hash_bytes[i-4];
+    }
+    for(int i = 36; i < 64; i++){
+        input[i] = mining_block.merkel_root_bytes[i-36];
+    }
+    sha256_forward(input, 0, first_round_output.data());
+    constantAToH(first_round_output);
+
     //初始化轮函数的变量 a-h 的变量分配 初始化第一轮变量
-    comment("init a-h varialble");
-    newVars("a0_round1", A_round1[0], 32);
-    newVars("b0_round1", B_round1[0], 32);
-    newVars("c0_round1", C_round1[0], 32);
-    newVars("d0_round1", D_round1[0], 32);
-    newVars("e0_round1", E_round1[0], 32);
-    newVars("f0_round1", F_round1[0], 32);
-    newVars("g0_round1", G_round1[0], 32);
-    newVars("h0_round1", H_round1[0], 32);
-#ifdef ROUND2
-    newVars("a0_round2", A_round2[0], 32);
-    newVars("b0_round2", B_round2[0], 32);
-    newVars("c0_round2", C_round2[0], 32);
-    newVars("d0_round2", D_round2[0], 32);
-    newVars("e0_round2", E_round2[0], 32);
-    newVars("f0_round2", F_round2[0], 32);
-    newVars("g0_round2", G_round2[0], 32);
-    newVars("h0_round2", H_round2[0], 32);
-#endif 
+//     comment("init a-h varialble");
+//     newVars("a0_round1", A_round1[0], 32);
+//     newVars("b0_round1", B_round1[0], 32);
+//     newVars("c0_round1", C_round1[0], 32);
+//     newVars("d0_round1", D_round1[0], 32);
+//     newVars("e0_round1", E_round1[0], 32);
+//     newVars("f0_round1", F_round1[0], 32);
+//     newVars("g0_round1", G_round1[0], 32);
+//     newVars("h0_round1", H_round1[0], 32);
+// #ifdef ROUND2
+//     newVars("a0_round2", A_round2[0], 32);
+//     newVars("b0_round2", B_round2[0], 32);
+//     newVars("c0_round2", C_round2[0], 32);
+//     newVars("d0_round2", D_round2[0], 32);
+//     newVars("e0_round2", E_round2[0], 32);
+//     newVars("f0_round2", F_round2[0], 32);
+//     newVars("g0_round2", G_round2[0], 32);
+//     newVars("h0_round2", H_round2[0], 32);
+
+    // 
+// #endif 
     for(int i = 1; i <= 64; i++){
         // 每轮其实都是直接新变量
         newVars("a"+std::to_string(i)+"round1", A_round1[i], 32);
@@ -111,143 +142,147 @@ bool PowCnf::assignVariablesIndices(){
 }
 
 void PowCnf::constantK(){
-    constant32(k[0], 0x428a2f98, "k0");
-    constant32(k[1], 0x71374491, "k1");
-    constant32(k[2], 0xb5c0fbcf, "k2");
-    constant32(k[3], 0xe9b5dba5, "k3");
-    constant32(k[4], 0x3956c25b, "k4");
+    //todo: 使用constantwithexist来代替这个
+    //
 
-    constant32(k[5], 0x59f111f1, "k5");
-    constant32(k[6], 0x923f82a4, "k6");
-    constant32(k[7], 0xab1c5ed5, "k7");
-    constant32(k[8], 0xd807aa98, "k8");
-    constant32(k[9], 0x12835b01, "k9");
+    constantWithExist(k[0], 0x428a2f98, "k0", 32);
+    constantWithExist(k[1], 0x71374491, "k1", 32);
+    constantWithExist(k[2], 0xb5c0fbcf, "k2", 32);
+    constantWithExist(k[3], 0xe9b5dba5, "k3", 32);
+    constantWithExist(k[4], 0x3956c25b, "k4", 32);
 
-    constant32(k[10], 0x243185be, "k10");
-    constant32(k[11], 0x550c7dc3, "k11");
-    constant32(k[12], 0x72be5d74, "k12");
-    constant32(k[13], 0x80deb1fe, "k13");
-    constant32(k[14], 0x9bdc06a7, "k14");
+    constantWithExist(k[5], 0x59f111f1, "k5", 32);
+    constantWithExist(k[6], 0x923f82a4, "k6", 32);
+    constantWithExist(k[7], 0xab1c5ed5, "k7", 32);
+    constantWithExist(k[8], 0xd807aa98, "k8", 32);
+    constantWithExist(k[9], 0x12835b01, "k9", 32);
 
-    constant32(k[15], 0xc19bf174, "k15");
-    constant32(k[16], 0xe49b69c1, "k16");
-    constant32(k[17], 0xefbe4786, "k17");
-    constant32(k[18], 0x0fc19dc6, "k18");
-    constant32(k[19], 0x240ca1cc, "k19");
+    constantWithExist(k[10], 0x243185be, "k10", 32);
+    constantWithExist(k[11], 0x550c7dc3, "k11", 32);
+    constantWithExist(k[12], 0x72be5d74, "k12", 32);
+    constantWithExist(k[13], 0x80deb1fe, "k13", 32);
+    constantWithExist(k[14], 0x9bdc06a7, "k14", 32);
 
-    constant32(k[20], 0x2de92c6f, "k20");
-    constant32(k[21], 0x4a7484aa, "k21");
-    constant32(k[22], 0x5cb0a9dc, "k22");
-    constant32(k[23], 0x76f988da, "k23");
-    constant32(k[24], 0x983e5152, "k24");
+    constantWithExist(k[15], 0xc19bf174, "k15", 32);
+    constantWithExist(k[16], 0xe49b69c1, "k16", 32);
+    constantWithExist(k[17], 0xefbe4786, "k17", 32);
+    constantWithExist(k[18], 0x0fc19dc6, "k18", 32);
+    constantWithExist(k[19], 0x240ca1cc, "k19", 32);
 
-    constant32(k[25], 0xa831c66d, "k25");
-    constant32(k[26], 0xb00327c8, "k26");
-    constant32(k[27], 0xbf597fc7, "k27");
-    constant32(k[28], 0xc6e00bf3, "k28");
-    constant32(k[29], 0xd5a79147, "k29");
+    constantWithExist(k[20], 0x2de92c6f, "k20", 32);
+    constantWithExist(k[21], 0x4a7484aa, "k21", 32);
+    constantWithExist(k[22], 0x5cb0a9dc, "k22", 32);
+    constantWithExist(k[23], 0x76f988da, "k23", 32);
+    constantWithExist(k[24], 0x983e5152, "k24", 32);
 
-    constant32(k[30], 0x06ca6351, "k30");
-    constant32(k[31], 0x14292967, "k31");
-    constant32(k[32], 0x27b70a85, "k32");
-    constant32(k[33], 0x2e1b2138, "k33");
-    constant32(k[34], 0x4d2c6dfc, "k34");
+    constantWithExist(k[25], 0xa831c66d, "k25", 32);
+    constantWithExist(k[26], 0xb00327c8, "k26", 32);
+    constantWithExist(k[27], 0xbf597fc7, "k27", 32);
+    constantWithExist(k[28], 0xc6e00bf3, "k28", 32);
+    constantWithExist(k[29], 0xd5a79147, "k29", 32);
 
-    constant32(k[35], 0x53380d13, "k35");
-    constant32(k[36], 0x650a7354, "k36");
-    constant32(k[37], 0x766a0abb, "k37");
-    constant32(k[38], 0x81c2c92e, "k38");
-    constant32(k[39], 0x92722c85, "k39");
+    constantWithExist(k[30], 0x06ca6351, "k30", 32);
+    constantWithExist(k[31], 0x14292967, "k31", 32);
+    constantWithExist(k[32], 0x27b70a85, "k32", 32);
+    constantWithExist(k[33], 0x2e1b2138, "k33", 32);
+    constantWithExist(k[34], 0x4d2c6dfc, "k34", 32);
 
-    constant32(k[40], 0xa2bfe8a1, "k40");
-    constant32(k[41], 0xa81a664b, "k41");
-    constant32(k[42], 0xc24b8b70, "k42");
-    constant32(k[43], 0xc76c51a3, "k43");
-    constant32(k[44], 0xd192e819, "k44");
+    constantWithExist(k[35], 0x53380d13, "k35", 32);
+    constantWithExist(k[36], 0x650a7354, "k36", 32);
+    constantWithExist(k[37], 0x766a0abb, "k37", 32);
+    constantWithExist(k[38], 0x81c2c92e, "k38", 32);
+    constantWithExist(k[39], 0x92722c85, "k39", 32);
 
-    constant32(k[45], 0xd6990624, "k45");
-    constant32(k[46], 0xf40e3585, "k46");
-    constant32(k[47], 0x106aa070, "k47");
-    constant32(k[48], 0x19a4c116, "k48");
-    constant32(k[49], 0x1e376c08, "k49");
+    constantWithExist(k[40], 0xa2bfe8a1, "k40", 32);
+    constantWithExist(k[41], 0xa81a664b, "k41", 32);
+    constantWithExist(k[42], 0xc24b8b70, "k42", 32);
+    constantWithExist(k[43], 0xc76c51a3, "k43", 32);
+    constantWithExist(k[44], 0xd192e819, "k44", 32);
 
-    constant32(k[50], 0x2748774c, "k50");
-    constant32(k[51], 0x34b0bcb5, "k51");
-    constant32(k[52], 0x391c0cb3, "k52");
-    constant32(k[53], 0x4ed8aa4a, "k53");
-    constant32(k[54], 0x5b9cca4f, "k54");
+    constantWithExist(k[45], 0xd6990624, "k45", 32);
+    constantWithExist(k[46], 0xf40e3585, "k46", 32);
+    constantWithExist(k[47], 0x106aa070, "k47", 32);
+    constantWithExist(k[48], 0x19a4c116, "k48", 32);
+    constantWithExist(k[49], 0x1e376c08, "k49", 32);
 
-    constant32(k[55], 0x682e6ff3, "k55");
-    constant32(k[56], 0x748f82ee, "k56");
-    constant32(k[57], 0x78a5636f, "k57");
-    constant32(k[58], 0x84c87814, "k58");
-    constant32(k[59], 0x8cc70208, "k59");
+    constantWithExist(k[50], 0x2748774c, "k50", 32);
+    constantWithExist(k[51], 0x34b0bcb5, "k51", 32);
+    constantWithExist(k[52], 0x391c0cb3, "k52", 32);
+    constantWithExist(k[53], 0x4ed8aa4a, "k53", 32);
+    constantWithExist(k[54], 0x5b9cca4f, "k54", 32);
 
-    constant32(k[60], 0x90befffa, "k60");
-    constant32(k[61], 0xa4506ceb, "k61");
-    constant32(k[62], 0xbef9a3f7, "k62");
-    constant32(k[63], 0xc67178f2, "k63");
+    constantWithExist(k[55], 0x682e6ff3, "k55", 32);
+    constantWithExist(k[56], 0x748f82ee, "k56", 32);
+    constantWithExist(k[57], 0x78a5636f, "k57", 32);
+    constantWithExist(k[58], 0x84c87814, "k58", 32);
+    constantWithExist(k[59], 0x8cc70208, "k59", 32);
+
+    constantWithExist(k[60], 0x90befffa, "k60", 32);
+    constantWithExist(k[61], 0xa4506ceb, "k61", 32);
+    constantWithExist(k[62], 0xbef9a3f7, "k62", 32);
+    constantWithExist(k[63], 0xc67178f2, "k63", 32);
 }
 
 void PowCnf::constantW_round1(){
+    // todo将constant和constant32只用一个变量来表示
     
     std::string temp = mining_block.merkel_root_bytes;
     temp += mining_block.time_bytes;
     temp += mining_block.bits_bytes;
 
     for(int i = 0; i < 12; i++){
-        constant(&(w_round1[i/4][24-(8*(i%4))]), temp[i+28], 8, "");
+        constantWithExist(&(w_round1[i/4][24-(8*(i%4))]), temp[i+28], "" , 8);
     }
 
-    constant32(w_round1[4], 0x80000000,  "w_round1_4");
-    constant32(w_round1[5], 0x00000000,  "w_round1_5");
-    constant32(w_round1[6], 0x00000000,  "w_round1_6");
-    constant32(w_round1[7], 0x00000000,  "w_round1_7");
-    constant32(w_round1[8], 0x00000000,  "w_round1_8");
-    constant32(w_round1[9], 0x00000000,  "w_round1_9");
-    constant32(w_round1[10], 0x00000000, "w_round1_10");
-    constant32(w_round1[11], 0x00000000, "w_round1_11");
-    constant32(w_round1[12], 0x00000000, "w_round1_12");
-    constant32(w_round1[13], 0x00000000, "w_round1_13");
-    constant32(w_round1[14], 0x00000000, "w_round1_14");
-    constant32(w_round1[15], 0x00000280, "w_round1_15");
+    constantWithExist(w_round1[4], 0x80000000,  "w_round1_4", 32);
+    constantWithExist(w_round1[5], 0x00000000,  "w_round1_5", 32);
+    constantWithExist(w_round1[6], 0x00000000,  "w_round1_6", 32);
+    constantWithExist(w_round1[7], 0x00000000,  "w_round1_7", 32);
+    constantWithExist(w_round1[8], 0x00000000,  "w_round1_8", 32);
+    constantWithExist(w_round1[9], 0x00000000,  "w_round1_9", 32);
+    constantWithExist(w_round1[10], 0x00000000, "w_round1_10", 32);
+    constantWithExist(w_round1[11], 0x00000000, "w_round1_11", 32);
+    constantWithExist(w_round1[12], 0x00000000, "w_round1_12", 32);
+    constantWithExist(w_round1[13], 0x00000000, "w_round1_13", 32);
+    constantWithExist(w_round1[14], 0x00000000, "w_round1_14", 32);
+    constantWithExist(w_round1[15], 0x00000280, "w_round1_15", 32);
 }
 
 void PowCnf::constantW_round2(){
 #ifdef ROUND2
-    constant32(w_round2[8], 0x80000000,  "w_round2_8");
-    constant32(w_round2[9], 0x00000000,  "w_round2_9");
-    constant32(w_round2[10], 0x00000000, "w_round2_10");
-    constant32(w_round2[11], 0x00000000, "w_round2_11");
-    constant32(w_round2[12], 0x00000000, "w_round2_12");
-    constant32(w_round2[13], 0x00000000, "w_round2_13");
-    constant32(w_round2[14], 0x00000000, "w_round2_14");
-    constant32(w_round2[15], 0x00000100, "w_round2_15");
+    constantWithExist(w_round2[8], 0x80000000,  "w_round2_8", 32);
+    constantWithExist(w_round2[9], 0x00000000,  "w_round2_9", 32);
+    constantWithExist(w_round2[10], 0x00000000, "w_round2_10", 32);
+    constantWithExist(w_round2[11], 0x00000000, "w_round2_11", 32);
+    constantWithExist(w_round2[12], 0x00000000, "w_round2_12", 32);
+    constantWithExist(w_round2[13], 0x00000000, "w_round2_13", 32);
+    constantWithExist(w_round2[14], 0x00000000, "w_round2_14", 32);
+    constantWithExist(w_round2[15], 0x00000100, "w_round2_15", 32);
 #endif 
 }
 
 
 void PowCnf::constantAToH(std::vector<uint32_t> first_round_output){
     // 初始化round1的A0到H0
-    constant32(A_round1[0], first_round_output[0], "A[0]_round1");
-    constant32(B_round1[0], first_round_output[1], "B[0]_round1");
-    constant32(C_round1[0], first_round_output[2], "C[0]_round1");
-    constant32(D_round1[0], first_round_output[3], "D[0]_round1");
-    constant32(E_round1[0], first_round_output[4], "E[0]_round1");
-    constant32(F_round1[0], first_round_output[5], "F[0]_round1");
-    constant32(G_round1[0], first_round_output[6], "G[0]_round1");
-    constant32(H_round1[0], first_round_output[7], "H[0]_round1");
+    constantWithExist(A_round1[0], first_round_output[0], "A[0]_round1", 32);
+    constantWithExist(B_round1[0], first_round_output[1], "B[0]_round1", 32);
+    constantWithExist(C_round1[0], first_round_output[2], "C[0]_round1", 32);
+    constantWithExist(D_round1[0], first_round_output[3], "D[0]_round1", 32);
+    constantWithExist(E_round1[0], first_round_output[4], "E[0]_round1", 32);
+    constantWithExist(F_round1[0], first_round_output[5], "F[0]_round1", 32);
+    constantWithExist(G_round1[0], first_round_output[6], "G[0]_round1", 32);
+    constantWithExist(H_round1[0], first_round_output[7], "H[0]_round1", 32);
 
 #ifdef ROUND2
+    constantWithExist(A_round2[0], a_to_h_init[0], "A[0]_round2", 32);
+    constantWithExist(B_round2[0], a_to_h_init[1], "B[0]_round2", 32);
+    constantWithExist(C_round2[0], a_to_h_init[2], "C[0]_round2", 32);
+    constantWithExist(D_round2[0], a_to_h_init[3], "D[0]_round2", 32);
+    constantWithExist(E_round2[0], a_to_h_init[4], "E[0]_round2", 32);
+    constantWithExist(F_round2[0], a_to_h_init[5], "F[0]_round2", 32);
+    constantWithExist(G_round2[0], a_to_h_init[6], "G[0]_round2", 32);
+    constantWithExist(H_round2[0], a_to_h_init[7], "H[0]_round2", 32);
     // 初始化round2的A0到H0
-    constant32(A_round2[0], a_to_h_init[0], "A[0]_round2");
-    constant32(B_round2[0], a_to_h_init[1], "B[0]_round2");
-    constant32(C_round2[0], a_to_h_init[2], "C[0]_round2");
-    constant32(D_round2[0], a_to_h_init[3], "D[0]_round2");
-    constant32(E_round2[0], a_to_h_init[4], "E[0]_round2");
-    constant32(F_round2[0], a_to_h_init[5], "F[0]_round2");
-    constant32(G_round2[0], a_to_h_init[6], "G[0]_round2");
-    constant32(H_round2[0], a_to_h_init[7], "H[0]_round2");
 #endif 
 }
 
@@ -265,21 +300,6 @@ bool PowCnf::initVariables(){
     
     // 初始化第一轮a0到ah的值
     // 先将固定部分直接sha256_forward了
-    
-    std::vector<uint32_t> first_round_output;
-    first_round_output.resize(8);
-    uint8_t input[64];
-    for(int i = 0; i < 4; i++){
-        input[i] = mining_block.version_bytes[i];
-    }
-    for(int i = 4; i < 36; i++){
-        input[i] = mining_block.previous_block_hash_bytes[i-4];
-    }
-    for(int i = 36; i < 64; i++){
-        input[i] = mining_block.merkel_root_bytes[i-36];
-    }
-    sha256_forward(input, 0, first_round_output.data());
-    constantAToH(first_round_output);
 
     // 直接memcpy第二轮中w0-w7的值，其实就是第一轮的a64-h64加a0-h64，结果就是w0到w7的序号
     constantW_round2();
@@ -307,7 +327,7 @@ void PowCnf::fct_SHA256_SHR(int r[32], unsigned int bits, int word[32]){
             // r[i] = 0;
             // constant(r[i], 0);
             newVars("fillbit0", t, 1);
-            constant(t, 0, 1, "");
+            constant(t, 0, "",  1);
             first = false;
         }
         r[i] = t[0];
@@ -534,7 +554,7 @@ void PowCnf::constrainHout(){
         uint8_t temp = mining_block.target[i];
         // std::cout  << std::hex << std::setw(2) << std::setfill(' ') << static_cast<int>(temp) << " ";
         if(temp == 0){
-            constant((&(h_out[7-(i/4)][8*(i%4)])), 0x00, 8, "h_out");
+            constant((&(h_out[7-(i/4)][8*(i%4)])), 0x00, "h_out", 8);
             continue;
         }
 
@@ -578,8 +598,8 @@ void PowCnf::ConstrainNonce(uint32_t nonce, int left_bits){
     nonce_clause_num = 16-left_bits;
     static bool tag = false;
     if(!tag){
-        constant(&w_round1[3][8], 0x5d, 8, "nonce_constant8");
-        constant(&w_round1[3][0], 0xab, 8, "nonce_constant0");
+        constant(&w_round1[3][8], 0x5d, "nonce_constant8", 8);
+        constant(&w_round1[3][0], 0xab, "nonce_constant0", 8);
         tag = true;
     }
 
